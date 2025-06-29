@@ -1,4 +1,4 @@
-# Ministry of Foreign Affairs - Laravel Application
+# Laravel Blog App
 
 A comprehensive Laravel web application for managing posts, users, and content with role-based access control.
 
@@ -49,7 +49,7 @@ A comprehensive Laravel web application for managing posts, users, and content w
 1. **Clone the repository**
    ```bash
    git clone <your-repository-url>
-   cd ministry-of-foreign-affairs
+   cd laravel-blog-app
    ```
 
 2. **Install PHP dependencies**
@@ -96,7 +96,7 @@ A comprehensive Laravel web application for managing posts, users, and content w
 ## 📁 Project Structure
 
 ```
-ministry-of-foreign-affairs/
+laravel-blog-app/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/
@@ -194,7 +194,7 @@ ministry-of-foreign-affairs/
 
 ### Environment Variables
 ```env
-APP_NAME="Ministry of Foreign Affairs"
+APP_NAME="Laravel Blog App"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://your-domain.com

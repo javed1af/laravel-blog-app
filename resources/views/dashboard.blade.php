@@ -18,7 +18,7 @@
                         </div>
                         <div>
                             <h1 class="text-2xl font-bold">Welcome back, {{ Auth::user()->name }}!</h1>
-                            <p class="text-blue-100">Here's what's happening in your ministry application.</p>
+                            <p class="text-blue-100">Here's what's happening in your blog application.</p>
                         </div>
                     </div>
                 </div>
