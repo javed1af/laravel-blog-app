@@ -1,61 +1,237 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Ministry of Foreign Affairs - Laravel Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive Laravel web application for managing posts, users, and content with role-based access control.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Authentication & Authorization
+- **User Registration & Login** - Secure authentication with Laravel Breeze
+- **Role-Based Access Control** - Admin and regular user roles
+- **Profile Management** - Users can update their profiles
+- **Password Reset** - Email-based password reset functionality
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Content Management
+- **Posts System** - Full CRUD operations for blog posts
+- **Post Status** - Draft and published states
+- **Rich Content** - Title, content, and status management
+- **Author Attribution** - Posts are linked to their authors
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### User Management (Admin Only)
+- **User Listing** - View all users with statistics
+- **User Creation** - Add new users with role assignment
+- **User Editing** - Update user information and roles
+- **User Deletion** - Remove users (with safety checks)
 
-## Learning Laravel
+### Dashboard & Analytics
+- **Statistics Dashboard** - Post counts, user counts, and activity
+- **Recent Posts** - Quick access to latest content
+- **Quick Actions** - Direct links to common tasks
+- **Responsive Design** - Works on all devices
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Technology Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Backend:** Laravel 11 (PHP 8.2+)
+- **Frontend:** Blade Templates with Tailwind CSS
+- **Database:** SQLite (default) / MySQL / PostgreSQL
+- **Authentication:** Laravel Breeze
+- **JavaScript:** Alpine.js for interactivity
+- **Styling:** Tailwind CSS (via CDN)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📋 Requirements
 
-## Laravel Sponsors
+- PHP 8.2 or higher
+- Composer
+- Node.js (optional, for asset compilation)
+- Web server (Apache/Nginx) or PHP built-in server
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Installation
 
-### Premium Partners
+1. **Clone the repository**
+   ```bash
+   git clone <your-repository-url>
+   cd ministry-of-foreign-affairs
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-## Contributing
+3. **Environment setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. **Configure database**
+   Edit `.env` file and set your database credentials:
+   ```env
+   DB_CONNECTION=sqlite
+   DB_DATABASE=/path/to/your/database.sqlite
+   ```
 
-## Code of Conduct
+5. **Run migrations and seeders**
+   ```bash
+   php artisan migrate --seed
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. **Start the development server**
+   ```bash
+   php artisan serve
+   ```
 
-## Security Vulnerabilities
+7. **Access the application**
+   Open your browser and go to `http://localhost:8000`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🔑 Default Login Credentials
 
-## License
+### Super Admin
+- **Email:** `admin@example.com`
+- **Password:** `password`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Test User
+- **Email:** `test@example.com`
+- **Password:** `password`
+
+## 📁 Project Structure
+
+```
+ministry-of-foreign-affairs/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── PostController.php
+│   │   │   ├── UserController.php
+│   │   │   └── Auth/
+│   │   ├── Middleware/
+│   │   │   └── AdminMiddleware.php
+│   │   └── Requests/
+│   │       └── PostRequest.php
+│   ├── Models/
+│   │   ├── Post.php
+│   │   └── User.php
+│   └── Policies/
+│       └── PostPolicy.php
+├── database/
+│   ├── migrations/
+│   │   ├── create_posts_table.php
+│   │   └── add_is_admin_to_users_table.php
+│   └── seeders/
+│       ├── SuperAdminSeeder.php
+│       ├── PostSeeder.php
+│       └── DatabaseSeeder.php
+├── resources/
+│   └── views/
+│       ├── posts/
+│       ├── users/
+│       ├── layouts/
+│       └── components/
+└── routes/
+    └── web.php
+```
+
+## 🔐 Security Features
+
+- **CSRF Protection** - All forms are protected
+- **SQL Injection Prevention** - Eloquent ORM with prepared statements
+- **XSS Protection** - Blade template escaping
+- **Authorization Policies** - Role-based access control
+- **Input Validation** - Form request validation
+- **Password Hashing** - Secure password storage
+
+## 🎨 UI/UX Features
+
+- **Modern Design** - Clean and professional interface
+- **Responsive Layout** - Mobile-friendly design
+- **Interactive Elements** - Dropdowns, modals, and animations
+- **User Feedback** - Success/error messages
+- **Loading States** - Visual feedback for actions
+- **Accessibility** - Semantic HTML and ARIA labels
+
+## 📊 Database Schema
+
+### Users Table
+- `id` - Primary key
+- `name` - User's full name
+- `email` - Unique email address
+- `password` - Hashed password
+- `is_admin` - Boolean admin flag
+- `email_verified_at` - Email verification timestamp
+- `created_at` / `updated_at` - Timestamps
+
+### Posts Table
+- `id` - Primary key
+- `title` - Post title
+- `content` - Post content
+- `user_id` - Foreign key to users table
+- `status` - Enum: 'draft' or 'published'
+- `created_at` / `updated_at` - Timestamps
+
+## 🔧 Customization
+
+### Adding New Features
+1. Create migrations for new tables
+2. Add models with relationships
+3. Create controllers with proper authorization
+4. Add routes in `routes/web.php`
+5. Create views in `resources/views/`
+6. Update navigation if needed
+
+### Styling
+- Modify Tailwind classes in Blade templates
+- Add custom CSS in `resources/css/app.css`
+- Update Tailwind config in `tailwind.config.js`
+
+## 🚀 Deployment
+
+### Production Setup
+1. Set `APP_ENV=production` in `.env`
+2. Configure your web server (Apache/Nginx)
+3. Set up SSL certificate
+4. Configure database for production
+5. Run `php artisan config:cache`
+6. Set proper file permissions
+
+### Environment Variables
+```env
+APP_NAME="Ministry of Foreign Affairs"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📝 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the repository
+- Contact the development team
+- Check the Laravel documentation
+
+## 🔄 Version History
+
+- **v1.0.0** - Initial release with authentication, posts, and user management
+- **v1.1.0** - Added dashboard statistics and improved UI
+- **v1.2.0** - Enhanced user management and role-based access
+
+---
+
+**Built with ❤️ using Laravel**
