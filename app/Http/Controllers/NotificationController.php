@@ -21,6 +21,12 @@ class NotificationController extends Controller
 
         $query = Notification::query();
 
+        if (!$user->isAdmin()) {
+            $query->whereHas('users', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        }
+
         if ($request->filled('start_date')) {
             $query->whereDate('created_at', '>=', $request->start_date);
         }
@@ -30,7 +36,9 @@ class NotificationController extends Controller
         }
 
         // All users see all notifications on the index page
-        $notifications = $query->with('users', 'creator')->latest()->paginate(10);
+        $notifications = $query->with(['creator', 'users', 'authUserPivot'])
+            ->latest()
+            ->paginate(10);
 
         return view('notifications.index', compact('notifications'));
     }

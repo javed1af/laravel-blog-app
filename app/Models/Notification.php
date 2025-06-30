@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Notification extends Model
 {
@@ -22,5 +23,13 @@ class Notification extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function authUserPivot()
+    {
+        return $this->belongsToMany(User::class)
+            ->wherePivot('user_id', Auth::id())
+            ->withTimestamps()
+            ->withPivot('is_read');
     }
 }

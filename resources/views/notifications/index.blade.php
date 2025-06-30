@@ -68,15 +68,19 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             @php
-                                                // The 'users' relationship is constrained to only the auth user in the controller
-                                                $userPivot = $notification->users->first();
+                                                $authUserPivot = $notification->authUserPivot->first();
                                             @endphp
 
-                                            @if($userPivot)
-                                                @if($userPivot->pivot->is_read)
+                                            @if($authUserPivot)
+                                                @if($authUserPivot->pivot->is_read)
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Read</span>
                                                 @else
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Unread</span>
+                                                    <form action="{{ route('notifications.read', $notification) }}" method="POST" class="inline-block ml-2">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <button type="submit" class="text-xs text-indigo-600 hover:text-indigo-900">Mark as Read</button>
+                                                    </form>
                                                 @endif
                                             @else
                                                 {{-- If the auth user is not a recipient of this notification --}}
