@@ -194,7 +194,7 @@ laravel-blog-app/
 
 ### Environment Variables
 ```env
-APP_NAME="Laravel Blog App"
+APP_NAME="Ministry of Foreign Affairs Notification App"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://your-domain.com

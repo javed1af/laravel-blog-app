@@ -18,14 +18,14 @@
                         </div>
                         <div>
                             <h1 class="text-2xl font-bold">Welcome back, {{ Auth::user()->name }}!</h1>
-                            <p class="text-blue-100">Here's what's happening in your blog application.</p>
+                            <p class="text-blue-100">Here's what's happening in your Notification application.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {{-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Total Posts -->
                 <div class="bg-white overflow-hidden shadow-sm rounded-lg">
                     <div class="p-6">
@@ -200,7 +200,7 @@
                         </div>
                     @endif
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </x-app-layout>

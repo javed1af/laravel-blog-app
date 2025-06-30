@@ -27,8 +27,9 @@ class UserNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
+        info('tomail works');
         return (new MailMessage)
             ->subject($this->title)
-            ->line($this->message);
+            ->view('emails.notification', ['title' => $this->title, 'message' => $this->message]);
     }
 }
