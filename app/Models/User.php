@@ -57,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->is_admin;
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class)->withTimestamps();
+    }
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class)->withTimestamps()->withPivot('is_read');
+    }
 }

@@ -21,6 +21,9 @@ Route::middleware('auth')->group(function () {
     // Posts routes
     Route::resource('posts', PostController::class);
 
+    // Notifications routes
+    Route::resource('notifications', App\Http\Controllers\NotificationController::class);
+
     // Users routes (admin only)
     Route::middleware('admin')->group(function () {
         Route::resource('users', UserController::class);

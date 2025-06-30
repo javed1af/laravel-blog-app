@@ -15,14 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SuperAdminSeeder::class,
+            UserSeeder::class,
             PostSeeder::class,
-        ]);
-
-        // Create additional test users
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'is_admin' => false,
+            NotificationSeeder::class,
         ]);
     }
 }
