@@ -47,7 +47,23 @@
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ $user->name }}</span>
                                             @endforeach
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $notification->is_read ? 'Read' : 'Not Read' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            @php
+                                                // The 'users' relationship is constrained to only the auth user in the controller
+                                                $userPivot = $notification->users->first();
+                                            @endphp
+
+                                            @if($userPivot)
+                                                @if($userPivot->pivot->is_read)
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Read</span>
+                                                @else
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Unread</span>
+                                                @endif
+                                            @else
+                                                {{-- If the auth user is not a recipient of this notification --}}
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">N/A</span>
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $notification->created_at->format('Y-m-d H:i') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('notifications.show', $notification) }}" class="text-indigo-600 hover:text-indigo-900">View</a>

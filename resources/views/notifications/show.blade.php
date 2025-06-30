@@ -13,6 +13,22 @@
                     <h3 class="text-lg font-medium text-gray-900">{{ $notification->title }}</h3>
                     <p class="mt-1 text-sm text-gray-600"><strong>Created by:</strong> {{ $notification->creator->name ?? 'N/A' }} on {{ $notification->created_at->format('M d, Y H:i A') }}</p>
                     <p class="mt-4">{{ $notification->message }}</p>
+
+                    @php
+                        $userPivot = $notification->users->firstWhere('id', auth()->id());
+                    @endphp
+
+                    @if ($userPivot && !$userPivot->pivot->is_read)
+                        <div class="mt-4">
+                            <form action="{{ route('notifications.read', $notification) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                    Mark as Read
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -31,7 +47,9 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    @if (Auth::user()->is_admin)
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -45,12 +63,14 @@
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Unread</span>
                                             @endif
                                         </td>
+                                        @if (Auth::user()->is_admin)
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <form action="{{ route('notifications.toggleReadStatus', ['notification' => $notification->id, 'user' => $user->id]) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="text-indigo-600 hover:text-indigo-900">Toggle Status</button>
                                             </form>
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

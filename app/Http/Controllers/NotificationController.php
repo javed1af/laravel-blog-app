@@ -29,7 +29,7 @@ class NotificationController extends Controller
      */
     public function create()
     {
-        // $this->authorize('create', Notification::class);
+        $this->authorize('create', Notification::class);
         $users = User::all();
         return view('notifications.create', compact('users'));
     }
@@ -39,7 +39,7 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->authorize('create', Notification::class);
+        $this->authorize('create', Notification::class);
         $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string|max:500',
@@ -90,7 +90,7 @@ class NotificationController extends Controller
 
     public function toggleReadStatus(Notification $notification, User $user)
     {
-        // $this->authorize('update', $notification);
+        $this->authorize('update', $notification);
         $pivot = $notification->users()->where('user_id', $user->id)->first()->pivot;
         $pivot->is_read = !$pivot->is_read;
         $pivot->save();
@@ -100,9 +100,13 @@ class NotificationController extends Controller
 
     public function markAsRead(Notification $notification)
     {
+        $this->authorize('view', $notification);
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $user->notifications()->updateExistingPivot($notification->id, ['is_read' => true]);
+
+        // Reload the notification with updated pivot data to pass to the view
+        $notification->load('users', 'creator');
 
         return back()->with('success', 'Notification marked as read.');
     }

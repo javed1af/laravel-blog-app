@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     // Notifications routes
     Route::resource('notifications', App\Http\Controllers\NotificationController::class)->except(['destroy']);
     Route::post('notifications/{notification}/users/{user}/toggle-read', [App\Http\Controllers\NotificationController::class, 'toggleReadStatus'])->name('notifications.toggleReadStatus');
+    Route::patch('notifications/{notification}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
 
     // Users routes (admin only)
     Route::middleware('admin')->group(function () {
