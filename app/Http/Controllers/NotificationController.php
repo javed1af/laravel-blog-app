@@ -125,24 +125,48 @@ class NotificationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Notification $notification)
     {
-        //
+        $this->authorize('update', $notification);
+        $users = User::all();
+        $notification->load('users');
+
+        return view('notifications.edit', compact('notification', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Notification $notification)
     {
-        //
+        $this->authorize('update', $notification);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'message' => 'required|string',
+            'users' => 'required|array',
+            'users.*' => 'exists:users,id',
+        ]);
+
+        $notification->update([
+            'title' => $request->title,
+            'message' => $request->message,
+        ]);
+
+        $notification->users()->sync($request->users);
+
+        return redirect()->route('notifications.index')->with('success', 'Notification updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Notification $notification)
     {
-        //
+        $this->authorize('delete', $notification);
+        $notification->users()->detach();
+        $notification->delete();
+
+        return redirect()->route('notifications.index')->with('success', 'Notification deleted successfully.');
     }
 }

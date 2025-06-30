@@ -84,6 +84,16 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $notification->created_at->format('Y-m-d H:i') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <a href="{{ route('notifications.show', $notification) }}" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                            @can('update', $notification)
+                                                <a href="{{ route('notifications.edit', $notification) }}" class="text-indigo-600 hover:text-indigo-900 ml-2">Edit</a>
+                                            @endcan
+                                            @can('delete', $notification)
+                                                <form action="{{ route('notifications.destroy', $notification) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this notification?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900 ml-2">Delete</button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
