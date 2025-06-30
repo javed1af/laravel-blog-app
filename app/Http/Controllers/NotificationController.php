@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendNotificationJob;
 
 class NotificationController extends Controller
 {
@@ -58,35 +59,14 @@ class NotificationController extends Controller
             'users.*' => 'exists:users,id',
         ]);
 
-        // 1. Create the notification record once.
-        $notification = Notification::create([
-            'title' => $request->title,
-            'message' => $request->message,
-            'created_by' => Auth::id() ?? 1,
-        ]);
+        SendNotificationJob::dispatch(
+            $request->title,
+            $request->message,
+            $request->users,
+            Auth::id() ?? 1
+        );
 
-        // 2. Attach all selected users to the notification.
-        $notification->users()->attach($request->users);
-
-        // 3. Get the user models and loop through them to send the email.
-        $users = User::whereIn('id', $request->users)->get();
-        info('users: ', [$users]);
-        foreach ($users as $user) {
-            // $params = [
-            //     'to' => $user->email,
-            //     'subject' => 'Notification from IT dep',
-            // ];
-
-            // Mail::send([], [], function ($message) use ($params) {
-            //     $message->to($params['to'])
-            //         ->subject($params['subject'])
-            //         ->html('emails.notification');
-            // });
-
-            $user->notify(new UserNotification($request->title, $request->message));
-        }
-
-        return redirect()->route('notifications.index')->with('success', 'Notification sent successfully!');
+        return redirect()->route('notifications.index')->with('success', 'Notification sending has been queued.');
     }
 
     /**
