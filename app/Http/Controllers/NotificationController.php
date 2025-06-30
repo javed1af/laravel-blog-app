@@ -73,12 +73,6 @@ class NotificationController extends Controller
                 'subject' => 'Notification from IT dep',
             ];
 
-            // Mail::send([], [], function ($message) use ($params) {
-            //     $message->to($params['to'])
-            //         ->subject($params['subject'])
-            //         ->html('emails.notification');
-            // });
-
             $data = [
                 'title' => $request->title,
                 'message' => $request->message
