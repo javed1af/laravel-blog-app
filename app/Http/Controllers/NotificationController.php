@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class NotificationController extends Controller
 {
@@ -15,14 +16,10 @@ class NotificationController extends Controller
      */
     public function index()
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
-        if ($user->isAdmin()) {
-            // Admin sees all notifications
-            $notifications = Notification::with('users', 'creator')->latest()->paginate(10);
-        } else {
-            // Normal user sees only their notifications
-            $notifications = $user->notifications()->with('creator')->latest()->paginate(10);
-        }
+        // All users see all notifications on the index page
+        $notifications = Notification::with('users', 'creator')->latest()->paginate(10);
 
         return view('notifications.index', compact('notifications'));
     }
@@ -32,7 +29,7 @@ class NotificationController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Notification::class);
+        // $this->authorize('create', Notification::class);
         $users = User::all();
         return view('notifications.create', compact('users'));
     }
@@ -42,7 +39,7 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Notification::class);
+        // $this->authorize('create', Notification::class);
         $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string|max:500',
@@ -64,18 +61,18 @@ class NotificationController extends Controller
         $users = User::whereIn('id', $request->users)->get();
         info('users: ', [$users]);
         foreach ($users as $user) {
-            $params = [
-                'to' => $user->email,
-                'subject' => 'Notification from IT dep',
-            ];
+            // $params = [
+            //     'to' => $user->email,
+            //     'subject' => 'Notification from IT dep',
+            // ];
 
-            Mail::send([], [], function ($message) use ($params) {
-                $message->to($params['to'])
-                    ->subject($params['subject'])
-                    ->html('emails.notification');
-            });
+            // Mail::send([], [], function ($message) use ($params) {
+            //     $message->to($params['to'])
+            //         ->subject($params['subject'])
+            //         ->html('emails.notification');
+            // });
 
-            // $user->notify(new UserNotification($request->title, $request->message));
+            $user->notify(new UserNotification($request->title, $request->message));
         }
 
         return redirect()->route('notifications.index')->with('success', 'Notification sent successfully!');
@@ -86,8 +83,8 @@ class NotificationController extends Controller
      */
     public function show(Notification $notification)
     {
-        // $this->authorize('view', $notification);
-        // $notification->load('users', 'creator');
+        $this->authorize('view', $notification);
+        $notification->load('users', 'creator');
         return view('notifications.show', compact('notification'));
     }
 
@@ -103,6 +100,7 @@ class NotificationController extends Controller
 
     public function markAsRead(Notification $notification)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $user->notifications()->updateExistingPivot($notification->id, ['is_read' => true]);
 
