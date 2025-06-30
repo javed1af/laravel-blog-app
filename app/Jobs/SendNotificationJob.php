@@ -56,7 +56,7 @@ class SendNotificationJob implements ShouldQueue
         // 3. Get the user models and loop through them to send the email.
         $users = User::whereIn('id', $this->userIds)->get();
         foreach ($users as $user) {
-            $user->notify(new UserNotification($this->title, $this->message));
+            // $user->notify(new UserNotification($this->title, $this->message));
         }
 
         // foreach ($users as $user) {

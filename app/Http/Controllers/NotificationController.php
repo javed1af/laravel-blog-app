@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Jobs\SendNotificationJob;
 
 class NotificationController extends Controller
@@ -63,6 +64,34 @@ class NotificationController extends Controller
             $request->users,
             Auth::id() ?? 1
         );
+
+        $users = User::whereIn('id', $request->users)->get();
+
+        foreach ($users as $user) {
+            $params = [
+                'to' => $user->email,
+                'subject' => 'Notification from IT dep',
+            ];
+
+            // Mail::send([], [], function ($message) use ($params) {
+            //     $message->to($params['to'])
+            //         ->subject($params['subject'])
+            //         ->html('emails.notification');
+            // });
+
+            $data = [
+                'title' => $request->title,
+                'message' => $request->message
+            ];
+
+            Mail::send([], [], function ($message) use ($params, $data) {
+                $html = view('emails.notification', $data)->render();
+
+                $message->to($params['to'])
+                    ->subject($params['subject'])
+                    ->html($html);
+            });
+        }
 
         return redirect()->route('notifications.index')->with('success', 'Notification sending has been queued.');
     }
