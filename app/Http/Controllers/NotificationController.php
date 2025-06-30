@@ -14,12 +14,23 @@ class NotificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
+
+        $query = Notification::query();
+
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
         // All users see all notifications on the index page
-        $notifications = Notification::with('users', 'creator')->latest()->paginate(10);
+        $notifications = $query->with('users', 'creator')->latest()->paginate(10);
 
         return view('notifications.index', compact('notifications'));
     }
